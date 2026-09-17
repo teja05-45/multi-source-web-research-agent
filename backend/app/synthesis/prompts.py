@@ -38,6 +38,14 @@ def format_evidence_block(evidence_list: list[Evidence]) -> str:
     return "\n".join(lines)
 
 
-def build_user_prompt(question: str, evidence_list: list[Evidence]) -> str:
+def build_user_prompt(
+    question: str,
+    evidence_list: list[Evidence],
+    resolution_context: str | None = None,
+) -> str:
     evidence_block = format_evidence_block(evidence_list)
-    return f"Research question: {question}\n\nEvidence:\n{evidence_block}"
+    if resolution_context:
+        context_block = f"\n\nConversation context:\n{resolution_context}"
+    else:
+        context_block = ""
+    return f"Research question: {question}{context_block}\n\nEvidence:\n{evidence_block}"

@@ -28,6 +28,20 @@ class ProviderOutcome(BaseModel):
     retries: int = 0
 
 
+class TraceResolution(BaseModel):
+    """Structured metadata about how a question was resolved from context."""
+
+    raw_question: str
+    resolved_question: str
+    topic: Optional[str] = None
+    is_follow_up: bool = False
+    intent: str = "new_independent"
+    referenced_entities: List[str] = Field(default_factory=list)
+    confidence: float = 1.0
+    needs_clarification: bool = False
+    method: str = "identity"  # "identity" | "heuristic" | "llm" | "ambiguous"
+
+
 class ResearchTrace(BaseModel):
     request_id: str
     subqueries: int
@@ -43,6 +57,7 @@ class ResearchTrace(BaseModel):
     citation_coverage: float = 0.0
     stage_timings_ms: dict[str, float] = Field(default_factory=dict)
     total_latency_ms: Optional[float] = None
+    resolution: Optional[TraceResolution] = None
 
 
 class ResearchReport(BaseModel):
@@ -57,6 +72,10 @@ class ResearchReport(BaseModel):
     degraded: bool = Field(
         default=False,
         description="True if the report was produced with reduced source coverage (e.g. a provider failed).",
+    )
+    status: str = Field(
+        default="completed",
+        description="completed | partial | insufficient_evidence | needs_clarification",
     )
 
 

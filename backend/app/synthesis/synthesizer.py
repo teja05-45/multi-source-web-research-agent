@@ -34,7 +34,8 @@ def _strip_code_fences(text: str) -> str:
 
 
 async def synthesize(
-    question: str, evidence_list: list[Evidence], llm_client: LLMClient, max_tokens: int
+    question: str, evidence_list: list[Evidence], llm_client: LLMClient, max_tokens: int,
+    resolution_context: str | None = None,
 ) -> tuple[str, list[Claim]]:
     """Returns (answer_text, claims). Never raises for malformed LLM output —
     falls back to a deterministic insufficient-evidence response instead.
@@ -44,7 +45,7 @@ async def synthesize(
         return _NO_EVIDENCE_ANSWER, []
 
     system_prompt = SYNTHESIS_SYSTEM_PROMPT
-    user_prompt = build_user_prompt(question, evidence_list)
+    user_prompt = build_user_prompt(question, evidence_list, resolution_context=resolution_context)
 
     try:
         raw = await llm_client.complete(
