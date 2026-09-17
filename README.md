@@ -351,6 +351,64 @@ words without accurately representing its meaning, and this system will not
 catch that. This limitation is stated here deliberately rather than
 implied away.
 
+## Conversation Context Resolution
+
+Follow-up questions are resolved against the conversation *before* retrieval,
+so "Why is it popular?" after "What is JavaScript?" researches **JavaScript**
+— never a different topic that happens to dominate search results.
+
+### How it works
+
+1. **State reconstruction** (`app/question_resolution/state.py`) — each
+   research turn persists a compact resolution record
+   (`raw_question`, `resolved_question`, `topic`, `intent`) in
+   `research_requests.request_payload`. `build_conversation_state` rebuilds
+   a lightweight `ConversationState` (previous question/answer, active
+   topic, recent research topics, unresolved references) from stored
+   messages + research records. **Memory here is for understanding only —
+   it is never treated as evidence**, and fresh retrieval still happens for
+   every answer.
+2. **Deterministic resolution** (`app/question_resolution/resolver.py`) —
+   the subject is decided by rules, not by the LLM:
+   - bare pronouns (`it`, `its`, `they`, `them`, `their`, `this`,
+     `that`, …) resolve to the **active topic**;
+   - explicit capitalized entities in the new question **override or extend**
+     the active topic (a new topic change, or a comparison keeps both);
+   - an ambiguous pronoun with **no kind of active topic** sets
+     `needs_clarification=True` — the assistant asks the user to name the
+     subject instead of guessing a default;
+   - an explicit entity in the same question (e.g. "What is GDPR and how
+     does it work?") is self-contained and is never treated as ambiguous.
+3. **Optional LLM polish with validation** — the LLM is only allowed to
+   rephrase the grammatically imperfect resolved question for fluency; its
+   output is rejected unless it still contains the deterministically chosen
+   topic, so it cannot silently invent a new subject.
+4. **Subject enforcement downstream** (`app/orchestration/research_pipeline.py`)
+   — the resolved question becomes the *effective* research question, every
+   generated subquery is checked to still mention the topic (recipient
+   pronouns are rewritten, otherwise the topic is prefixed), and an
+   evidence-level **topic-alignment gate** flags reports where most fetched
+   passages do not mention the resolved topic (`status="partial"` +
+   `evidence_topic_mismatch` uncertainty). The synthesis prompt receives the
+   original question, the resolved question, and the active topic.
+5. **Observability** — every report's `research_trace.resolution` carries
+   the original/resolved question, active topic, intent, confidence, and
+   method; the frontend renders this block and shows a status banner for
+   `completed` / `partial` / `insufficient_evidence` / `needs_clarification`.
+
+### Quality gates
+
+- **10 unit tests** (`backend/tests/unit/test_question_resolution.py`,
+  `105 backend tests passing`) cover the prescribed scenarios: the
+  original reproduction ("why it differ from other programming language"
+  after JavaScript), topic switches, comparisons, possessives, three-turn
+  continuity (JavaScript → … → Python after an explicit switch), and
+  clarification.
+- **30-case evaluation dataset**
+  (`backend/tests/evaluation/conversation_resolution_cases.json`) with a
+  deterministic runner (`run_conversation_resolution.py`) — last recorded
+  run: **30/30 (accuracy 1.0)**. See `docs/EVALUATION_RESULTS.md`.
+
 ## 16. Security
 
 - **Secrets**: only ever read from environment variables
