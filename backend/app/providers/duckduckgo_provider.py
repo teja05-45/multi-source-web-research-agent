@@ -40,7 +40,29 @@ _HEADERS = {
     ),
 }
 
-_RETRYABLE_STATUS_CODES = {202, 403, 429, 500, 502, 503}
+_RETRYABLE_STATUS_CODES = {202, 403, 408, 429, 500, 502, 503}
+
+_STATUS_MESSAGES = {
+    200: "OK",
+    202: "DuckDuckGo is processing the request (accepted); results not ready yet.",
+    400: "DuckDuckGo rejected the request as malformed.",
+    403: "DuckDuckGo is blocking this requester (rate limited or flagged as a bot).",
+    404: "DuckDuckGo could not find the requested endpoint.",
+    408: "DuckDuckGo timed out waiting for the request.",
+    429: "DuckDuckGo is rate limiting this requester.",
+    500: "DuckDuckGo experienced an internal server error.",
+    502: "DuckDuckGo was temporarily unavailable (bad gateway).",
+    503: "DuckDuckGo is temporarily unavailable (service unavailable).",
+    504: "DuckDuckGo timed out waiting for an upstream service.",
+}
+
+
+def _describe_status(status_code: int) -> tuple[str, bool]:
+    """Map a status code to a human-friendly message and retryability."""
+    fallback = f"DuckDuckGo returned HTTP {status_code}."
+    message = _STATUS_MESSAGES.get(status_code, fallback)
+    retryable = status_code in _RETRYABLE_STATUS_CODES or status_code >= 500
+    return message, retryable
 
 
 def _extract_destination_url(href: str) -> str:
@@ -98,18 +120,12 @@ class DuckDuckGoProvider(SearchProvider):
                 f"DuckDuckGo HTML request failed: {exc}", provider=self.name, retryable=True
             ) from exc
 
-        if response.status_code in _RETRYABLE_STATUS_CODES:
+        status_message, retryable = _describe_status(response.status_code)
+        if retryable or response.status_code != 200:
             raise ProviderError(
-                f"DuckDuckGo HTML returned {response.status_code}",
+                f"DuckDuckGo HTML: {status_message}",
                 provider=self.name,
-                retryable=True,
-                status_code=response.status_code,
-            )
-        if response.status_code != 200:
-            raise ProviderError(
-                f"DuckDuckGo HTML unexpected status ({response.status_code})",
-                provider=self.name,
-                retryable=False,
+                retryable=retryable,
                 status_code=response.status_code,
             )
 
@@ -133,18 +149,12 @@ class DuckDuckGoProvider(SearchProvider):
                 f"DuckDuckGo Lite request failed: {exc}", provider=self.name, retryable=True
             ) from exc
 
-        if response.status_code in _RETRYABLE_STATUS_CODES:
+        status_message, retryable = _describe_status(response.status_code)
+        if retryable or response.status_code != 200:
             raise ProviderError(
-                f"DuckDuckGo Lite returned {response.status_code}",
+                f"DuckDuckGo Lite: {status_message}",
                 provider=self.name,
-                retryable=True,
-                status_code=response.status_code,
-            )
-        if response.status_code != 200:
-            raise ProviderError(
-                f"DuckDuckGo Lite unexpected status ({response.status_code})",
-                provider=self.name,
-                retryable=False,
+                retryable=retryable,
                 status_code=response.status_code,
             )
 
