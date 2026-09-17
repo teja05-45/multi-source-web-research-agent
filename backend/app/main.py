@@ -16,8 +16,10 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from app.api.routes import health, providers, research
+from app.api.routes import conversations, health, providers, research
+from app.api.error_handlers import register_exception_handlers
 from app.config import get_settings
+from app.database import close_db, init_db
 from app.observability.logging import configure_logging, set_request_id
 from app.orchestration.research_pipeline import ResearchPipeline
 from app.providers.brave_provider import BraveProvider
@@ -34,6 +36,9 @@ logger = logging.getLogger("research_agent.main")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    # Initialize database
+    await init_db()
+    
     provs = _build_providers()
     llm_client = build_llm_client(
         provider=settings.llm_provider,
@@ -58,6 +63,8 @@ async def lifespan(app: FastAPI):
         },
     )
     yield
+    # Cleanup
+    await close_db()
 
 
 app = FastAPI(
@@ -71,15 +78,18 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins_list,
     allow_credentials=True,
-    allow_methods=["GET", "POST"],
+    allow_methods=["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
+
+register_exception_handlers(app)
 
 
 @app.middleware("http")
 async def request_context_middleware(request: Request, call_next):
     """Assigns a request ID for log correlation and enforces a max body size."""
-    request_id = str(uuid.uuid4())
+    incoming = request.headers.get(settings.request_id_header)
+    request_id = incoming if incoming else str(uuid.uuid4())
     set_request_id(request_id)
 
     content_length = request.headers.get("content-length")
@@ -120,3 +130,4 @@ def _build_providers() -> list[SearchProvider]:
 app.include_router(health.router)
 app.include_router(providers.router)
 app.include_router(research.router)
+app.include_router(conversations.router)
