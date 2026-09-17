@@ -1,0 +1,63 @@
+[
+  {
+    "id": "eval-1",
+    "category": "simple_factual",
+    "question": "What is the boiling point of water at sea level?",
+    "expected_properties": {
+      "min_sources": 1,
+      "requires_citations": true,
+      "should_be_degraded": false
+    }
+  },
+  {
+    "id": "eval-2",
+    "category": "multi_step",
+    "question": "Compare the current approaches to AI agent memory and explain the major trade-offs.",
+    "expected_properties": {
+      "min_subqueries": 2,
+      "min_sources": 2,
+      "requires_citations": true
+    }
+  },
+  {
+    "id": "eval-3",
+    "category": "current_information",
+    "question": "What is the latest stable version of the Python programming language?",
+    "expected_properties": {
+      "min_sources": 1,
+      "requires_citations": true
+    }
+  },
+  {
+    "id": "eval-4",
+    "category": "conflicting_sources",
+    "question": "How many employees does the company have, according to available reports?",
+    "expected_properties": {
+      "conflict_possible": true
+    }
+  },
+  {
+    "id": "eval-5",
+    "category": "insufficient_evidence",
+    "question": "What will the price of a fictional cryptocurrency named Zephracoin9999XQ be next year?",
+    "expected_properties": {
+      "should_be_insufficient_or_low_confidence": true
+    }
+  },
+  {
+    "id": "eval-6",
+    "category": "duplicate_heavy",
+    "question": "What did the company announce in its press release today?",
+    "expected_properties": {
+      "duplicate_handling_exercised": true
+    }
+  },
+  {
+    "id": "eval-7",
+    "category": "provider_failure",
+    "question": "What are the main differences between REST and GraphQL APIs?",
+    "expected_properties": {
+      "graceful_degradation_if_provider_fails": true
+    }
+  }
+]
