@@ -31,6 +31,44 @@ export default function ResearchTrace({ trace }: Props) {
 
       {expanded && (
         <div id="research-trace-panel" className="mt-6 space-y-6">
+          {trace.resolution && (
+            <div>
+              <h3 className="text-sm font-semibold text-gray-700 mb-3">Question resolution</h3>
+              <div className="rounded-xl border border-gray-200 bg-gray-50/70 p-4 text-sm space-y-2">
+                {trace.resolution.is_follow_up && (
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-accent-50 text-accent-700 border border-accent-200">
+                      follow-up
+                    </span>
+                    <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 border border-gray-200 capitalize">
+                      {trace.resolution.intent.replace(/_/g, " ")}
+                    </span>
+                    {trace.resolution.topic && (
+                      <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+                        topic: {trace.resolution.topic}
+                      </span>
+                    )}
+                  </div>
+                )}
+                <div className="grid sm:grid-cols-2 gap-3">
+                  <div className="bg-white rounded-lg border border-gray-200 p-3">
+                    <div className="text-[11px] text-gray-400 uppercase tracking-wide mb-1">Original question</div>
+                    <div className="text-gray-800">{trace.resolution.raw_question}</div>
+                  </div>
+                  <div className="bg-white rounded-lg border border-gray-200 p-3">
+                    <div className="text-[11px] text-gray-400 uppercase tracking-wide mb-1">Resolved question</div>
+                    <div className="text-gray-800 font-medium">{trace.resolution.resolved_question}</div>
+                  </div>
+                </div>
+                {trace.resolution.needs_clarification && (
+                  <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+                    The subject could not be resolved — the assistant asked the user to clarify.
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
+
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm">
             <TraceStat label="Subqueries" value={trace.subqueries} />
             <TraceStat label="Providers succeeded" value={`${trace.providers_succeeded}/${trace.providers_attempted}`} />
