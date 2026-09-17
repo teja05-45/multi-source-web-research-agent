@@ -10,7 +10,7 @@ from app.models.report import ResearchReport, ResearchTrace
 
 
 class _FakePipeline:
-    async def run(self, request: ResearchRequest) -> ResearchReport:
+    async def run(self, request: ResearchRequest, *, resolution=None) -> ResearchReport:
         return ResearchReport(
             request_id="test-request-id",
             question=request.question,

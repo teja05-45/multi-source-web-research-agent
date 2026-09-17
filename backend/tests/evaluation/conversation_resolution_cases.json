@@ -1,0 +1,321 @@
+[
+  {
+    "id": "qr-01",
+    "category": "pronoun_followup",
+    "history": [
+      {"role": "user", "content": "What is JavaScript?"},
+      {"role": "assistant", "content": "{\"answer\": \"JavaScript is a general-purpose programming language.\", \"research_trace\": {\"resolution\": {\"topic\": \"JavaScript\"}}}"}
+    ],
+    "current_question": "Why is it popular?",
+    "expected_subjects": ["JavaScript"],
+    "expected_topic": "JavaScript"
+  },
+  {
+    "id": "qr-02",
+    "category": "pronoun_followup",
+    "history": [
+      {"role": "user", "content": "What is JavaScript?"},
+      {"role": "assistant", "content": "{\"answer\": \"JavaScript is a general-purpose programming language.\", \"research_trace\": {\"resolution\": {\"topic\": \"JavaScript\"}}}"}
+    ],
+    "current_question": "why it differ from other programming language",
+    "expected_subjects": ["JavaScript"],
+    "expected_topic": "JavaScript"
+  },
+  {
+    "id": "qr-03",
+    "category": "pronoun_followup",
+    "history": [
+      {"role": "user", "content": "What is Python?"},
+      {"role": "assistant", "content": "{\"answer\": \"Python is a high-level interpreted language.\", \"research_trace\": {\"resolution\": {\"topic\": \"Python\"}}}"}
+    ],
+    "current_question": "Why does it differ from other programming languages?",
+    "expected_subjects": ["Python"],
+    "expected_topic": "Python"
+  },
+  {
+    "id": "qr-04",
+    "category": "pronoun_followup",
+    "history": [
+      {"role": "user", "content": "What is React?"},
+      {"role": "assistant", "content": "{\"answer\": \"React is a JavaScript UI library.\", \"research_trace\": {\"resolution\": {\"topic\": \"React\"}}}"}
+    ],
+    "current_question": "Why is it used?",
+    "expected_subjects": ["React"],
+    "expected_topic": "React"
+  },
+  {
+    "id": "qr-05",
+    "category": "possessive_followup",
+    "history": [
+      {"role": "user", "content": "What is Tesla?"},
+      {"role": "assistant", "content": "{\"answer\": \"Tesla is an electric vehicle maker.\", \"research_trace\": {\"resolution\": {\"topic\": \"Tesla\"}}}"}
+    ],
+    "current_question": "What is its revenue?",
+    "expected_subjects": ["Tesla"],
+    "expected_topic": "Tesla"
+  },
+  {
+    "id": "qr-06",
+    "category": "possessive_followup",
+    "history": [
+      {"role": "user", "content": "Who is OpenAI?"},
+      {"role": "assistant", "content": "{\"answer\": \"OpenAI is an AI research organization.\", \"research_trace\": {\"resolution\": {\"topic\": \"OpenAI\"}}}"}
+    ],
+    "current_question": "Who are its competitors?",
+    "expected_subjects": ["OpenAI"],
+    "expected_topic": "OpenAI"
+  },
+  {
+    "id": "qr-07",
+    "category": "pronoun_followup",
+    "history": [
+      {"role": "user", "content": "What is Spotify?"},
+      {"role": "assistant", "content": "{\"answer\": \"Spotify is a music streaming service.\", \"research_trace\": {\"resolution\": {\"topic\": \"Spotify\"}}}"}
+    ],
+    "current_question": "How does it make money?",
+    "expected_subjects": ["Spotify"],
+    "expected_topic": "Spotify"
+  },
+  {
+    "id": "qr-08",
+    "category": "pronoun_followup",
+    "history": [
+      {"role": "user", "content": "What is Vue?"},
+      {"role": "assistant", "content": "{\"answer\": \"Vue is a progressive JavaScript framework.\", \"research_trace\": {\"resolution\": {\"topic\": \"Vue\"}}}"}
+    ],
+    "current_question": "Why is it gaining popularity?",
+    "expected_subjects": ["Vue"],
+    "expected_topic": "Vue"
+  },
+  {
+    "id": "qr-09",
+    "category": "explicit_topic_change",
+    "history": [
+      {"role": "user", "content": "What is JavaScript?"},
+      {"role": "assistant", "content": "{\"answer\": \"JavaScript is a general-purpose programming language.\", \"research_trace\": {\"resolution\": {\"topic\": \"JavaScript\"}}}"}
+    ],
+    "current_question": "Tell me about databases.",
+    "expected_subjects": ["databases"],
+    "expected_topic": null
+  },
+  {
+    "id": "qr-10",
+    "category": "explicit_topic_change",
+    "history": [
+      {"role": "user", "content": "What is JavaScript?"},
+      {"role": "assistant", "content": "{\"answer\": \"JavaScript is a general-purpose programming language.\", \"research_trace\": {\"resolution\": {\"topic\": \"JavaScript\"}}}"}
+    ],
+    "current_question": "What about React Hooks now?",
+    "expected_subjects": ["React Hooks"],
+    "expected_topic": null
+  },
+  {
+    "id": "qr-11",
+    "category": "explicit_topic_change",
+    "history": [
+      {"role": "user", "content": "What is Yoga?"},
+      {"role": "assistant", "content": "{\"answer\": \"Yoga is a physical and mental practice.\", \"research_trace\": {\"resolution\": {\"topic\": \"Yoga\"}}}"}
+    ],
+    "current_question": "What about meditation techniques?",
+    "expected_subjects": ["meditation techniques"],
+    "expected_topic": null
+  },
+  {
+    "id": "qr-12",
+    "category": "explicit_topic_change",
+    "history": [
+      {"role": "user", "content": "What is JavaScript?"},
+      {"role": "assistant", "content": "{\"answer\": \"JavaScript is a general-purpose programming language.\", \"research_trace\": {\"resolution\": {\"topic\": \"JavaScript\"}}}"}
+    ],
+    "current_question": "Now let's talk about NestJS.",
+    "expected_subjects": ["NestJS"],
+    "expected_topic": "NestJS"
+  },
+  {
+    "id": "qr-13",
+    "category": "comparison",
+    "history": [
+      {"role": "user", "content": "What is JavaScript?"},
+      {"role": "assistant", "content": "{\"answer\": \"JavaScript is a general-purpose programming language.\", \"research_trace\": {\"resolution\": {\"topic\": \"JavaScript\"}}}"}
+    ],
+    "current_question": "Compare it with Python.",
+    "expected_subjects": ["JavaScript", "Python"],
+    "expected_topic": null
+  },
+  {
+    "id": "qr-14",
+    "category": "comparison",
+    "history": [
+      {"role": "user", "content": "What is Python?"},
+      {"role": "assistant", "content": "{\"answer\": \"Python is a high-level interpreted language.\", \"research_trace\": {\"resolution\": {\"topic\": \"Python\"}}}"}
+    ],
+    "current_question": "Compare it with Go.",
+    "expected_subjects": ["Python", "Go"],
+    "expected_topic": null
+  },
+  {
+    "id": "qr-15",
+    "category": "comparison",
+    "history": [
+      {"role": "user", "content": "What is JavaScript?"},
+      {"role": "assistant", "content": "{\"answer\": \"JavaScript is a general-purpose programming language.\", \"research_trace\": {\"resolution\": {\"topic\": \"JavaScript\"}}}"}
+    ],
+    "current_question": "How is it different from TypeScript?",
+    "expected_subjects": ["JavaScript", "TypeScript"],
+    "expected_topic": null
+  },
+  {
+    "id": "qr-16",
+    "category": "explicit_comparison",
+    "history": [
+      {"role": "user", "content": "What is React?"},
+      {"role": "assistant", "content": "{\"answer\": \"React is a JavaScript UI library.\", \"research_trace\": {\"resolution\": {\"topic\": \"React\"}}}"}
+    ],
+    "current_question": "React vs Vue.",
+    "expected_subjects": ["React", "Vue"],
+    "expected_topic": "React"
+  },
+  {
+    "id": "qr-17",
+    "category": "multi_turn_continuation",
+    "history": [
+      {"role": "user", "content": "What is JavaScript?"},
+      {"role": "assistant", "content": "{\"answer\": \"JavaScript is a general-purpose programming language.\", \"research_trace\": {\"resolution\": {\"topic\": \"JavaScript\"}}}"},
+      {"role": "user", "content": "Why is it popular?"},
+      {"role": "assistant", "content": "{\"answer\": \"Large ecosystem and browser dominance.\", \"research_trace\": {\"resolution\": {\"topic\": \"JavaScript\"}}}"}
+    ],
+    "current_question": "What is its ecosystem like?",
+    "expected_subjects": ["JavaScript"],
+    "expected_topic": "JavaScript"
+  },
+  {
+    "id": "qr-18",
+    "category": "multi_turn_continuation",
+    "history": [
+      {"role": "user", "content": "What is Python?"},
+      {"role": "assistant", "content": "{\"answer\": \"Python is a high-level interpreted language.\", \"research_trace\": {\"resolution\": {\"topic\": \"Python\"}}}"},
+      {"role": "user", "content": "What is pandas?"},
+      {"role": "assistant", "content": "{\"answer\": \"pandas is a data-analysis library.\", \"research_trace\": {\"resolution\": {\"topic\": \"pandas\"}}}"}
+    ],
+    "current_question": "Who maintains it?",
+    "expected_subjects": ["pandas"],
+    "expected_topic": "pandas"
+  },
+  {
+    "id": "qr-19",
+    "category": "multi_turn_continuation",
+    "history": [
+      {"role": "user", "content": "What is Tesla?"},
+      {"role": "assistant", "content": "{\"answer\": \"Tesla is an electric vehicle maker.\", \"research_trace\": {\"resolution\": {\"topic\": \"Tesla\"}}}"},
+      {"role": "user", "content": "What did Tesla launch in 2025?"},
+      {"role": "assistant", "content": "{\"answer\": \"Several new models.\", \"research_trace\": {\"resolution\": {\"topic\": \"Tesla\"}}}"},
+      {"role": "user", "content": "What is the Cybertruck?"},
+      {"role": "assistant", "content": "{\"answer\": \"A pickup truck.\", \"research_trace\": {\"resolution\": {\"topic\": \"Cybertruck\"}}}"}
+    ],
+    "current_question": "How much does it cost?",
+    "expected_subjects": ["Cybertruck"],
+    "expected_topic": "Cybertruck"
+  },
+  {
+    "id": "qr-20",
+    "category": "multi_turn_continuation",
+    "history": [
+      {"role": "user", "content": "What is OpenAI?"},
+      {"role": "assistant", "content": "{\"answer\": \"OpenAI is an AI research organization.\", \"research_trace\": {\"resolution\": {\"topic\": \"OpenAI\"}}}"},
+      {"role": "user", "content": "What is ChatGPT?"},
+      {"role": "assistant", "content": "{\"answer\": \"ChatGPT is a chatbot.\", \"research_trace\": {\"resolution\": {\"topic\": \"ChatGPT\"}}}"}
+    ],
+    "current_question": "What are its limitations?",
+    "expected_subjects": ["ChatGPT"],
+    "expected_topic": "ChatGPT"
+  },
+  {
+    "id": "qr-21",
+    "category": "possessive_with_explicit",
+    "history": [
+      {"role": "user", "content": "What is Amazon?"},
+      {"role": "assistant", "content": "{\"answer\": \"Amazon is an e-commerce and cloud company.\", \"research_trace\": {\"resolution\": {\"topic\": \"Amazon\"}}}"}
+    ],
+    "current_question": "What is its AWS revenue?",
+    "expected_subjects": ["Amazon", "AWS"],
+    "expected_topic": null
+  },
+  {
+    "id": "qr-22",
+    "category": "pronoun_followup",
+    "history": [
+      {"role": "user", "content": "What is Samsung?"},
+      {"role": "assistant", "content": "{\"answer\": \"Samsung is an electronics manufacturer.\", \"research_trace\": {\"resolution\": {\"topic\": \"Samsung\"}}}"}
+    ],
+    "current_question": "What are their newest phones?",
+    "expected_subjects": ["Samsung"],
+    "expected_topic": "Samsung"
+  },
+  {
+    "id": "qr-23",
+    "category": "pronoun_followup",
+    "history": [
+      {"role": "user", "content": "What is GitLab?"},
+      {"role": "assistant", "content": "{\"answer\": \"GitLab is a DevOps platform.\", \"research_trace\": {\"resolution\": {\"topic\": \"GitLab\"}}}"}
+    ],
+    "current_question": "How popular is it?",
+    "expected_subjects": ["GitLab"],
+    "expected_topic": "GitLab"
+  },
+  {
+    "id": "qr-24",
+    "category": "ambiguous",
+    "history": [],
+    "current_question": "Why is it popular?",
+    "expected_subjects": [],
+    "expect_clarification": true
+  },
+  {
+    "id": "qr-25",
+    "category": "ambiguous",
+    "history": [],
+    "current_question": "What does it cost?",
+    "expected_subjects": [],
+    "expect_clarification": true
+  },
+  {
+    "id": "qr-26",
+    "category": "ambiguous",
+    "history": [],
+    "current_question": "How much does that cost?",
+    "expected_subjects": [],
+    "expect_clarification": true
+  },
+  {
+    "id": "qr-27",
+    "category": "explicit_comparison",
+    "history": [],
+    "current_question": "Is AWS different from Azure?",
+    "expected_subjects": ["AWS", "Azure"],
+    "expected_topic": "AWS"
+  },
+  {
+    "id": "qr-28",
+    "category": "explicit_self_contained",
+    "history": [],
+    "current_question": "What is GDPR and how does it work?",
+    "expected_subjects": ["GDPR"],
+    "expected_topic": "GDPR"
+  },
+  {
+    "id": "qr-29",
+    "category": "explicit_self_contained",
+    "history": [],
+    "current_question": "Tell me about Kubernetes.",
+    "expected_subjects": ["Kubernetes"],
+    "expected_topic": "Kubernetes"
+  },
+  {
+    "id": "qr-30",
+    "category": "explicit_self_contained",
+    "history": [],
+    "current_question": "What is NLP used for today?",
+    "expected_subjects": ["NLP"],
+    "expected_topic": "NLP"
+  }
+]
