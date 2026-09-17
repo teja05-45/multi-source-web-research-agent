@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import logging
 
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException, Query, Request
 
 from app.models.errors import ResearchAgentError
 from app.models.query import ResearchRequest
@@ -29,10 +29,37 @@ def get_pipeline(request: Request) -> ResearchPipeline:
 
 @router.post("/api/research", response_model=ResearchReport)
 async def run_research(
-    payload: ResearchRequest, pipeline: ResearchPipeline = Depends(get_pipeline)
+    payload: ResearchRequest,
+    conversation_id: str | None = Query(None, description="Optional conversation ID for context"),
+    pipeline: ResearchPipeline = Depends(get_pipeline),
+    request: Request = None,
 ) -> ResearchReport:
     try:
-        return await pipeline.run(payload)
+        # If conversation_id provided, resolve follow-up questions against history
+        resolution = None
+        if conversation_id:
+            from app.database import session_scope
+            from app.question_resolution.resolver import resolve_question
+            from app.question_resolution.state import build_conversation_state
+            from app.repositories.conversation_repo import MessageRepository, ResearchRequestRepository
+
+            async with session_scope() as session:
+                msg_repo = MessageRepository(session)
+                research_repo = ResearchRequestRepository(session)
+                message_rows = await msg_repo.list_by_conversation(conversation_id, limit=200)
+                record_rows = await research_repo.list_by_conversation(conversation_id, limit=50)
+                state = build_conversation_state(
+                    [{"role": m.role, "content": m.content} for m in message_rows],
+                    [{"status": r.status, "request_payload": r.request_payload} for r in record_rows],
+                    current_question=payload.question,
+                )
+                resolution = await resolve_question(
+                    payload.question,
+                    state,
+                    llm_client=request.app.state.pipeline._llm_client,
+                )
+
+        return await pipeline.run(payload, resolution=resolution)
     except ResearchAgentError as exc:
         logger.error("research_request_failed", extra={"error_code": exc.code.value, "message": exc.message})
         raise HTTPException(status_code=502, detail={"error_code": exc.code.value, "message": exc.message}) from exc
