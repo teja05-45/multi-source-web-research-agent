@@ -182,6 +182,46 @@ key_claims: 2
 
 This confirms the pipeline works end-to-end with real credentials.
 
+## Conversation-context resolution evaluation (measured)
+
+`backend/tests/evaluation/run_conversation_resolution.py` runs the **deterministic
+question-resolution core** (`build_conversation_state` + `resolve_question` with
+no LLM) over the 30 realistic follow-up scenarios in
+`backend/tests/evaluation/conversation_resolution_cases.json` —
+pronoun follow-ups, possessive forms, comparisons, topic changes, three-turn
+continuations, acronyms, and ambiguous/needs-clarification cases.
+
+Per-case pass criteria (all must hold):
+1. every expected subject appears in the resolved question,
+2. the resolved `topic` matches the expected active topic (when one is
+   asserted), and
+3. `needs_clarification` is set exactly when the case expects it.
+
+### Last recorded run
+
+```
+cases_evaluated: 30
+passed:          30
+resolution_accuracy: 1.0
+```
+
+Representative outcomes from that run:
+
+| id | conversation context | follow-up | resolved | topic |
+|---|---|---|---|---|
+| qr-01 | What is JavaScript? | Why is it popular? | Why is JavaScript popular? | JavaScript |
+| qr-02 | What is JavaScript? | why it differ from other programming language | Why does JavaScript differ from other programming language | JavaScript |
+| qr-03 | What is Python? | Why does it differ from other programming languages? | Why does Python differ from other programming languages? | Python |
+| qr-05 | What is Tesla? | What is its revenue? | What is Tesla's revenue? | Tesla |
+| qr-09 | What is JavaScript? | Tell me about databases. | Tell me about databases. | — (new topic, no JS leak) |
+| qr-13 | What is JavaScript? | Compare it with Python. | Compare JavaScript with Python. | JavaScript (+ Python) |
+| qr-17 | JS → Why is it popular? | What is its ecosystem like? | What is JavaScript's ecosystem like? | JavaScript |
+| qr-19 | TESLA → Cybertruck | How much does it cost? | How much does Cybertruck cost? | Cybertruck |
+| qr-24 | — (no context) | Why is it popular? | (as-is) | needs_clarification = true |
+
+The exact reproduction from the original bug report (qr-02) resolves to
+JavaScript; the 30-case suite is fully deterministic and passes 30/30.
+
 ## Expected behavior per dataset item (for reference)
 
 | id | category | expected behavior (matches measured) |
