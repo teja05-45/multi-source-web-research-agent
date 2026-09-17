@@ -39,3 +39,11 @@ Thumbs.db
 # --- Build artifacts ---
 *.log
 build/
+
+# --- Local databases ---
+*.db
+*.sqlite
+*.sqlite3
+
+# --- TypeScript build info ---
+*.tsbuildinfo
