@@ -19,6 +19,8 @@ ENV PATH="/opt/venv/bin:$PATH" \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1
 
+RUN mkdir -p /data && chown -R appuser:appuser /data
+
 COPY --from=builder /opt/venv /opt/venv
 COPY app ./app
 

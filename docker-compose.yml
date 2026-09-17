@@ -5,6 +5,11 @@ services:
       dockerfile: Dockerfile
     env_file:
       - .env
+    environment:
+      # SQLite path inside the container must be on a user-writable volume
+      DATABASE_URL: sqlite+aiosqlite:////data/researchlens.db
+    volumes:
+      - researchlens-data:/data
     ports:
       - "8000:8000"
     healthcheck:
@@ -24,3 +29,6 @@ services:
     depends_on:
       - backend
     restart: unless-stopped
+
+volumes:
+  researchlens-data:
