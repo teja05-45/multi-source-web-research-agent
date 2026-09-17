@@ -31,6 +31,13 @@ class Settings(BaseSettings):
     log_level: str = Field(default="INFO", alias="LOG_LEVEL")
     request_id_header: str = Field(default="X-Request-ID", alias="REQUEST_ID_HEADER")
 
+    # --- Database --------------------------------------------------------
+    database_url: str = Field(
+        default="sqlite+aiosqlite:///./researchlens.db",
+        alias="DATABASE_URL",
+        description="Database connection URL (sqlite+aiosqlite for dev, postgresql+asyncpg for prod)",
+    )
+
     # --- CORS ------------------------------------------------------------
     cors_allowed_origins: str = Field(default="http://localhost:5173", alias="CORS_ALLOWED_ORIGINS")
 
